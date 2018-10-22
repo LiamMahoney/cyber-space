@@ -1,0 +1,114 @@
+[
+    {
+        "name": "Phishing",
+        "picture": "1Phishing.png", 
+        "description": "A malicious email, impersonating companies or people to steal sensitive information. Typically, the attack will have a sense of urgency, asking the victim to click on a link, open an attachment or send the attacker money.",
+        "mitigation": "The best way to avoid becoming a victim of a phishing attempt is to stop and think before you click on anything. If you spot a phishing attempt, report it via the “Report Suspicious Email” button or forward the email to the Service Desk.",
+        "quiz": {
+            "question": "If you spot a phishing email on your company email, what do you do?",
+            "answers": [
+                "Open it", "Ignore it", "Report it", "Delete it"
+            ],
+            "correctAnswer" : "Report it",
+            "afterQuiz": "Report all suspicious emails via the “Report Suspicious Email” button or forward to the Service Desk."
+        }
+    },
+    {
+        "name": "Malicious Link",
+        "picture": "2MaliciousLink.png", 
+        "description": "A malicious link is typically found in a phishing email. Often, the link will not send you to the site it appears to be. Rather, it will send you to a malicious website that will either download malicious software or tempt users to fill in sensitive data.",
+        "mitigation": "Look out for malicious links by stopping before you click. Hover over the link to see where the URL will take you. If unsure of a link, don’t click and type the intended site directly into a web browser.",
+        "quiz": {
+            "question": "True or False: It’s safe to click links that say “Click here” without any context.",
+            "answers": [
+                "True", "False"
+            ],
+            "correctAnswer": "False",
+            "afterQuiz": "Not all links will send you to the site it appears to be. Hover over links to see where the URL will take you."
+        }
+    },
+    {
+        "name": "Malicious Attachment",
+        "picture": "3MaliciousAttachment.png", 
+        "description": "A malicious attachment is typically found in a phishing email. Often, the attachment will have a vague name pertaining to the email. After opening the malicious attachment, the victim’s device could be infected with malware.",
+        "mitigation": "Be sure to avoid opening malicious attachments. If an email seems suspicious and provides very little detail, regarding the attachment, don’t open the attachment. It’s best to verify with your contact, via another platform (phone call, in person, etc.), if it is legitimate or not.",
+        "quiz": {
+            "question": "You were sent a suspicious attachment in an email, what should you do?",
+            "answers": [
+                "Open it to see what the email is talking about", "Verify with your contact before opening it", "Delete it so you don’t get hacked"
+            ],
+            "correctAnswer": "Verify with your contact before opening it",
+            "afterQuiz": "Malicious attachments can infect your computer after opening them. It’s best to verify with your contact via another platform before opening it."
+        }
+    }, 
+    {
+        "name": "Malware",
+        "picture": "4Malware.png", 
+        "description": "Typically found in phishing emails or malicious websites, malware is software that is intended to damage or disable computers and computer systems. Malware can be an umbrella term for various other malicious software such as viruses, ransomware, spyware, adware, etc.",
+        "mitigation": "Your best defense from malware is to avoid clicking on suspicious links or attachments as well as malicious websites or pop-up ads.",
+        "quiz": {
+            "question": "What is an example of Malware?",
+            "answers": [
+                "Virus", "Ransomware", "Spyware", "All of the above"
+            ],
+            "correctAnswer": "All of the above",
+            "afterQuiz": "Malware can be an umbrella term for various other malicious software that intends to damage or disable computers and computer systems."
+        }
+    },
+    {
+        "name": "Ransomware",
+        "picture": "5Ransomware.png", 
+        "description": "A type of malware that is designed to block access to a computer system until a sum of money is paid, typically in a form of online currency. Ransomware can come from malicious attachments, links, websites or pop-up ads.",
+        "mitigation": "Like other malware, the best defense is to avoid clicking on suspicious links, attachments or pop-up ads. If you find yourself a victim of ransomware, report it right away!",
+        "quiz": {
+            "question": "What form of money is typically requested to unlock a computer from ransomware?",
+            "answers": [
+                "Credit card", "Online currency", "Cash", "Wire transfer"
+            ],
+            "correctAnswer": "Online currency",
+            "afterQuiz": "Ransomware is designed to block access to a computer system until a sum of money is paid, typically in a form of online currency."
+        }
+    },
+    {
+        "name": "Vishing",
+        "picture": "6Vishing.png", 
+        "description": "Like phishing, it is a malicious attempt to compromise sensitive data, only it is done through a phone call. The attacker will impersonate a company or person, trying to get victims to give away sensitive data.",
+        "mitigation": "If you receive a suspicious phone call from an unknown number, attempt to write down the phone number, their name and any other important details. Then, hang up and report the information to the Service Desk.",
+        "quiz": {
+            "question": "You answer a phone call from an unknown number asking for company details, what do you do?",
+            "answers": [
+                "Give them the details they’re asking for", "Deny them information and hang up", "Write down any important details about the phone call and report it"
+            ],
+            "correctAnswer": "Write down any important details about the phone call and report it",
+            "afterQuiz": "If you receive a suspicious phone call from an unknown number, attempt to write down the phone number, their name and any other important details. Then, hang up and report the information to the Service Desk."
+        }
+    }, 
+    {
+        "name": "Insider Risk",
+        "picture": "7InsiderRisk.png", 
+        "description": "Any team member who uses their access, either intentionally or unintentionally, to inflict harm on a company. Some common behavioral indicators of an Insider Risk are acts of disgruntlement, lack of respect for company policies and unauthorized downloading/copying of files.",
+        "mitigation": "If you ever believe someone within your organization may be an Insider Risk, please report it via the Ethics Hotline.",
+        "quiz": {
+            "question": "You see an intern downloading files the last day of their internship to add to their school portfolio, are they considered an Insider Risk?",
+            "answers": [
+                "Yes", "No"
+            ],
+            "correctAnswer": "Yes",
+            "afterQuiz": "Any team member who uses their access, either intentionally or unintentionally, to inflict harm on a company. If you ever believe someone within your organization may be an Insider Risk, please report it via the Ethics Hotline."
+        }
+    },
+    {
+        "name": "Cybercriminal",
+        "picture": "8CyberCriminal.png", 
+        "description": "This is an individual who uses technology to gain sensitive data or money. Cybercriminals typically have the motives of financial or informational gain, grudges, ideology or for fun.",
+        "mitigation": "Cybercriminals can use a wide variety of cyber tactics and they are always changing. The best way to defend yourself is to stay up to date on the latest cyber trends.",
+        "quiz": {
+            "question": "Why might a cybercriminal attack a company?",
+            "answers": [
+                "Informational gain", "Grudges", "Fun", "All of the above"
+            ],
+            "correctAnswer": "All of the above",
+            "afterQuiz": "This is an individual who uses technology to gain sensitive data or money. Cybercriminals typically have the motives of financial or informational gain, grudges, ideology or for fun."
+        }
+    }
+]
