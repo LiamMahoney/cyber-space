@@ -666,8 +666,9 @@
         var message = buildErrorMessage(JSON.parse(error));
     
         var payload = {"text": message};
-    
-        xhttp.open("POST", "https://mattermosttest.oshkoshglobal.com/hooks/3gtr7ae1gpyzubrmodcrwbk6ha", true);
+        
+     //TODO: need to remake error handling
+        xhttp.open("POST", "", true);
         xhttp.send(JSON.stringify(payload));
     }
     function buildErrorMessage(error) {
