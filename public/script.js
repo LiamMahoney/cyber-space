@@ -1,5 +1,5 @@
 //FIXME: Create quiz menu for additional points
-//TODO: on backend - if score is greater than largest possible score, disregard it.
+//TODO: update score on screen as soon as round is over
  {
     var ua = window.navigator.userAgent;
     var msie = ua.indexOf("MSIE ");
@@ -50,6 +50,7 @@
     var roundScore = 0;
     var lives = 3;
     var keyboardListenerSet = false;
+    var userwon = false;
     
     var titleStyle = new PIXI.TextStyle({
         fontFamily: "Arial",
@@ -101,13 +102,34 @@
         xhttp.send(null);
     }
     function setup() {
+        userwon = false;
         initializeLifeCounter();
-    
-        var threatIdentifier = new PIXI.Text(enemyTypeList[roundNumber - 1].name, textStyle);
-        threatIdentifier.x = (app.stage.width - threatIdentifier.width) / 2;
-        app.stage.addChild(threatIdentifier);
-        
+        initializeThreatIdentifier();
+        initializeUser();
+
+        initializeEnemies();
+        if (!keyboardListenerSet) {
+            keyboardListenerSet = true;
+            keyboardListener(); 
+        }   
+    }
+    function initializeEnemies() {
         var enemy = enemyTypeList[roundNumber - 1];
+
+        for (i = 0; i < 8; i++) {
+            var tempEnemy = new PIXI.Sprite(PIXI.loader.resources['pics/' + enemy.picture].texture);
+            if (!enemyList[i - 1]) {
+                tempEnemy.position.set(0, 30);
+            } else {
+                tempEnemy.position.set(enemyList[i - 1].x + 100, 30);
+            }
+            tempEnemy.width = 30;
+            tempEnemy.height = 30;
+            app.stage.addChild(tempEnemy);
+            enemyList.push(tempEnemy);
+        }
+    }
+    function initializeUser() {
         user = new PIXI.Sprite(
             PIXI.loader.resources['pics/user.png'].texture
         );
@@ -117,25 +139,12 @@
         user.vx = 0;
         user.length = 1;
         app.stage.addChild(user); //app.stage/removeChild(user);
-        for (i = 0; i < 8; i++) {
-            var tempEnemy = new PIXI.Sprite(PIXI.loader.resources['pics/' + enemy.picture].texture);
-            if (!enemyList[i - 1]) {
-                tempEnemy.position.set(0, 20);
-            } else {
-                tempEnemy.position.set(enemyList[i - 1].x + 100, 20);
-            }
-            tempEnemy.width = 30;
-            tempEnemy.height = 30;
-            app.stage.addChild(tempEnemy);
-            enemyList.push(tempEnemy);
-        }
-        if (!keyboardListenerSet) {
-            keyboardListenerSet = true;
-            keyboardListener(); 
-        }
-        
     }
-    
+    function initializeThreatIdentifier() {
+        var threatIdentifier = new PIXI.Text(enemyTypeList[roundNumber - 1].name, textStyle);
+        threatIdentifier.x = (app.stage.width - threatIdentifier.width) / 2;
+        app.stage.addChild(threatIdentifier);
+    }
     function initializeLifeCounter() {
         for (i = 0; i < lives; i++) { //purposefully makes i available after for loop
             var tempLifePic = new PIXI.Sprite(PIXI.loader.resources['pics/life.png'].texture);
@@ -158,8 +167,37 @@
         //updates live score
         app.stage.children[1].text = "SCORE: " + (score + roundScore);
     
-        // app.stage.children[1]
         var enemyVY = 0;             
+        updateUserAmmo(delta);
+        // incrases fire rate
+        if (enemyList.length < 5) {
+            enemyFireRate = 150 - ((roundNumber - 1) * 20);
+        }
+        //round still going on
+        if (enemyList.length > 0) {
+            updateEnemyY();
+            updateEnemy(enemyVY);
+            updateEnemyAmmo(delta);
+        } else {
+            userWon();
+        }
+        
+        //Prevents user from moving any futher right
+        if (user.vx > 0) {
+            if (user.x > 960) {
+                user.vx = 0;
+            }
+        }
+        //Prevents user from moving any further left
+        if (user.vx < 0) {
+            if (user.x < 0) {
+                user.vx = 0;
+            }
+        } 
+    
+        user.x += user.vx;
+    }
+    function updateUserAmmo(delta) {
         //Updates ammo position (makes ammo move)
         for (var i = 0; i < userAmmoList.length; i++) {
             userAmmoList[i].y -= (5 + delta);
@@ -173,73 +211,46 @@
                 userAmmoList.splice(i, 1);
             }
         }
-        // incrases fire rate
-        if (enemyList.length < 5) {
-            enemyFireRate = 150 - ((roundNumber - 1) * 20);
-        }
-        //round still going on
-        if (enemyList.length > 0) {
-            if (enemyVX > 0) {
-                if (enemyList[enemyList.length - 1].x >= 980) {
-                    enemyVX = -2;
-                    //moves enemies down one row
-                    enemyVY = 20;
+    }
+    function updateEnemy(enemyVY) {
+        // updates enemy position
+        for (var i = 0; i < enemyList.length; i++) {
+            //changing position of enemy
+            enemyList[i].x += enemyVX;
+            enemyList[i].y += enemyVY;
+
+            // randomly creates enemy fire
+            // higher enemyFireRate = lower fire rate (smaller chance of random equaling 4)
+            if (Math.floor(Math.random() * enemyFireRate + 1) === 4) {
+                var tempEnemyAmmo = new PIXI.Sprite(PIXI.loader.resources['pics/enemyAmmo.png'].texture);
+                tempEnemyAmmo.position.set(enemyList[i].x + 8, enemyList[i].y + 20);
+                if (enemyVX > 0) {
+                    tempEnemyAmmo.vx = 1;
+                } else {
+                    tempEnemyAmmo.vx = -1;
                 }
-            } else if (enemyVX < 0) {
-                if (enemyList[0].x <= 0) {
-                    enemyVX = 2;
-                    enemyVY = 20;
-                }
+                app.stage.addChild(tempEnemyAmmo);
+                enemyAmmoList.push(tempEnemyAmmo);
             }
-    
-            // updates enemy position
-            for (var i = 0; i < enemyList.length; i++) {
-                //changing position of enemy
-                enemyList[i].x += enemyVX;
-                enemyList[i].y += enemyVY;
-    
-                // randomly creates enemy fire
-                // higher enemyFireRate = lower fire rate (smaller chance of random equaling 4)
-                if (Math.floor(Math.random() * enemyFireRate + 1) === 4) {
-                    var tempEnemyAmmo = new PIXI.Sprite(PIXI.loader.resources['pics/enemyAmmo.png'].texture);
-                    tempEnemyAmmo.position.set(enemyList[i].x + 8, enemyList[i].y + 20);
-                    if (enemyVX > 0) {
-                        tempEnemyAmmo.vx = 1;
-                    } else {
-                        tempEnemyAmmo.vx = -1;
-                    }
-                    app.stage.addChild(tempEnemyAmmo);
-                    enemyAmmoList.push(tempEnemyAmmo);
-                }
-                if (enemyList[i].y > 500) {
-                    //enemy won
-                    removeStageChildren(2);
-                    lives = lives - 1;
-                    roundScore = 0;
+            if (enemyList[i].y > 500) {
+                //enemy won
+                removeStageChildren(2);
+                lives = lives - 1;
+                roundScore = 0;
+                if (lives === 0) { //due to limitations to scoreboard
                     score -= 40;
-                    enemyFireRate = 300 - (20 * (roundNumber - 1));
-                    roundMenuHelper();
-                    state = menu;
-                    enemyAmmoList = [];
-                    enemyList = [];
-                    userAmmoList = [];
-    
                 }
+                enemyFireRate = 300 - (20 * (roundNumber - 1));
+                roundMenuHelper();
+                state = menu;
+                enemyAmmoList = [];
+                enemyList = [];
+                userAmmoList = [];
+
             }
-        } else {
-            //user won
-            removeStageChildren(2);
-            score += roundScore;
-            roundScore = 0;
-            state = menu;
-            //TODO: where a quiz menu would be called, instead of roundMenu
-            //mitigationFactsMenu(enemyTypeList[roundNumber - 1]);
-            roundNumber++;
-            // roundMenuHelper();
-            quizMenuHelper();
-            enemyFireRate = 300 - (20 * (roundNumber - 1));
         }
-    
+    }
+    function updateEnemyAmmo(delta) {
         // updates enemy ammo position 
         for (var i = 0; i < enemyAmmoList.length; i++) {
             enemyAmmoList[i].y += enemyAmmoVX + delta;
@@ -258,13 +269,15 @@
                 if (hit) {
                     //enemy won
                     app.stage.removeChild(enemyAmmoList[i]);
-                    enemyAmmoList.splice(i, 1);
+                    //enemyAmmoList.splice(i, 1);
                     app.stage.removeChild(user);
                     removeStageChildren(2);
                     lives = lives - 1;
                     user.alive = false;
                     roundScore = 0;
-                    score -= 40;
+                    if (lives === 0) {
+                        score -= 40;
+                    }
                     roundMenuHelper();
                     state = menu;
                     enemyFireRate = 300 - (20 * (roundNumber - 1));
@@ -272,21 +285,34 @@
                 }
             }
         }
-    
-        //Prevents user from moving any futher right
-        if (user.vx > 0) {
-            if (user.x > 960) {
-                user.vx = 0;
+    }
+    function userWon() {
+        app.stage.children[1].text = "SCORE: " + (score + roundScore);
+        //user won
+        userwon = true;
+        removeStageChildren(2);
+        score += roundScore;
+        roundScore = 0;
+        state = menu;
+        roundNumber++;
+        // roundMenuHelper();
+        quizMenuHelper();
+        enemyFireRate = 300 - (20 * (roundNumber - 1));
+    }
+    function updateEnemyY() {
+        // update enemyY
+        if (enemyVX > 0) {
+            if (enemyList[enemyList.length - 1].x >= 980) {
+                enemyVX = -2;
+                //moves enemies down one row
+                enemyVY = 20;
+            }
+        } else if (enemyVX < 0) {
+            if (enemyList[0].x <= 0) {
+                enemyVX = 2;
+                enemyVY = 20;
             }
         }
-        //Prevents user from moving any further left
-        if (user.vx < 0) {
-            if (user.x < 0) {
-                user.vx = 0;
-            }
-        } 
-    
-        user.x += user.vx;
     }
     //Used as state for menu
     function menu() {
@@ -399,10 +425,25 @@
     }
     function roundMenuHelper() {
         removeStageChildren(1);
-        roundMenu(); 
+        roundMenu();
+        if (userwon) {
+            score += 20; 
+            if (roundNumber > 1 && roundNumber - 1 < enemyTypeList.length) {
+                app.stage.children[1].text = "SCORE: " + (score + roundScore);
+            }
+        } else {
+            // Due to limitations with scoreboard
+            if (0 < lives && lives < 3) {
+                score -= 40;
+                app.stage.children[1].text = "SCORE: " + (score + roundScore);
+            }
+        }
     }
     function roundMenu() {
         if (lives === 0 || roundNumber - 1 === enemyTypeList.length) {
+            if (roundNumber - 1 === enemyTypeList.length) {
+                score += 20;
+            }
             scoreMenu();
         } else {
             displayScore();
@@ -504,6 +545,7 @@
 
         if (obj.currentTarget._text === enemyTypeList[roundNumber - 2].quiz.correctAnswer) {
             score += 60;
+            app.stage.children[1].text = "SCORE: " + (score + roundScore);
             var userCorrect = new PIXI.Text("This is correct! You have been awarded and additional 60 points!", textStyle);
             userCorrect.x = (container.width - userCorrect.width) / 2;
             userCorrect.y = userAnswer.y + userAnswer.height + 20;
@@ -542,10 +584,10 @@
         container.x = (app.stage.width - container.width) / 2;
         container.y = 50;
         app.stage.addChild(container);
+
     }
     
     function scoreMenu() {
-    
         //Removes canvas from stage
         app.destroy(true);
     
@@ -562,8 +604,6 @@
         formContainer.classList.add("form");
         formContainer.innerHTML += "<div class='status-container hide'></div>";
         formContainer.innerHTML += "<div class='text label'>Name:</div><input type='text' id='name' class='score-input form-input'>";
-        formContainer.innerHTML += "<div class='text label'>Segment:</div><select id='segment' class='form-select score-input'><option selected disabled>...</option><option>Access</option><option>Commercial</option><option>Corporate</option><option>Defense</option><option>Fire & Emergency</option></select>"; //TODO: consider changing to dropdown
-        formContainer.innerHTML += "<div class='text label'>Work Email:</div><input type='text' id='email' class='form-input score-input'>";
     
         container.appendChild(formContainer);
     
@@ -573,7 +613,8 @@
         document.body.appendChild(pageContainer);
     }
     //END MENUS AND ASSOCIATED FUNCTIONS
-    
+
+    //submits score to scoreboard
     function submitScore() {
         var scoreInfo = getScoreInfo();
         if (scoreInfo) {
@@ -582,14 +623,12 @@
             xhttp.onreadystatechange = function() {
                 if (xhttp.readyState === 4 && xhttp.status === 200) {
                     //CLEAR MENU & ALERT IT WAS SUCCESSFUL. -> play again button
-                    clearScoreMenu();
-                    changeScoreButton();
-                    addSuccessNotification();
+                    getScoreboard();
+                    //ddSuccessNotification();
+                    // TODO: add submission confirmation to scoreboard.
                 } else if (xhttp.readyState === 4 && xhttp.status !== 200) {
-                    addErrorNotification();
-                    postError(xhttp.responseText);
-                    changeScoreButton();
-                    clearScoreMenu();
+                    //addErrorNotification(); // TODO: add error notification to scoreboard.
+                    //TODO: change error handling
                 }
             };
     
@@ -597,6 +636,34 @@
             xhttp.send(JSON.stringify(scoreInfo));
         }
     }
+    function displayScores(scores) {
+        //TODO:
+        let scoreMenu = document.querySelector(".score-menu");
+        let scoreboard = `<div class="title">HIGH SCORES</div><div class="scoreboard">`;
+        for (let i = 0; i < scores.length; i++) {
+            let row = `<div class="score-row"><div class="score-item">${i + 1}</div><div class="score-item">${scores[i].score}</div><div class="score-item">${scores[i].name}</div></div>`;
+            scoreboard += row;
+        }
+        scoreboard += `</div>`;
+        scoreMenu.innerHTML = scoreboard;
+        scoreMenu.innerHTML += "<div class='button button-text' onclick='playAgain()'>PLAY AGAIN</div>";
+    }
+    // Gets scores from backend API
+    function getScoreboard() {
+        let xhttp = new XMLHttpRequest();
+    
+        xhttp.onreadystatechange = () => {
+            if (xhttp.readyState === xhttp.DONE && xhttp.status === 200) {
+                displayScores(JSON.parse(xhttp.responseText));
+            } else if (xhttp.readystate === xhttp.DONE && xhttp.status !== 200) {
+                postError(xhttp.responseText);
+            }
+        };
+        
+        xhttp.open("GET", "../score", true);
+        xhttp.send(null);
+    }
+    
     function getScoreInfo() {
         var filledOut = checkUserInput();
         if (filledOut) {
@@ -694,12 +761,11 @@
         enemyAmmoList = [];
         userAmmoList = [];
     }
-    var left, right, spacebar = undefined;
     function keyboardListener() {
           //Capture the keyboard arrow keys
-          left = keyboard(37),
-          right = keyboard(39),
-          spacebar = keyboard(32);
+        let left = keyboard(37);
+        let right = keyboard(39);
+        let spacebar = keyboard(32);
       
         //Left arrow key `press` method
         left.press = function()  {

@@ -27,7 +27,7 @@ app.post('/score', (req, res, next) => {
 
     req.on('end', () => {
         let userObj = JSON.parse(userInput);
-        let sql = `INSERT INTO scores (score, name, email, segment, date) VALUES (${userObj.score}, '${userObj.name}', '${userObj.email}', '${userObj.segment}', DateTime('now'))`;
+        let sql = `INSERT INTO scores (score, name, date) VALUES (${userObj.score}, '${userObj.name}', DateTime('now'))`;
         db.run(sql, (err) => {
             if (err) {
                 res.status(500);
@@ -43,7 +43,7 @@ app.post('/score', (req, res, next) => {
 
 app.get('/score', (req, res, next) => {
     let db = new sqlite.Database('./db/scores.db');
-    let scores = db.all("SELECT * FROM scores ORDER BY score DESC", [], (err, rows) => {
+    let scores = db.all("SELECT * FROM scores ORDER BY score DESC LIMIT 15", [], (err, rows) => {
         if (rows) {
             res.end(JSON.stringify(rows));
         }
@@ -68,6 +68,5 @@ app.get('/score/count', (req, res, next) => {
     });
 });
 
-app.listen(process.env.PORT);
-// app.listen(8080);
+app.listen(8080);
 
