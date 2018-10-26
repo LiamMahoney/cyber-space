@@ -33,7 +33,7 @@
     
     //Adding images so they can be used
     //FIXME: Load enemy pictures dynamically
-    PIXI.loader.add(['pics/title.png', 'pics/user.png', 'pics/ammo.png', 'pics/enemyAmmo.png', 'pics/menuBackground.png', 'pics/controls.png', 'pics/startButton.png', 'pics/nextButton.png', 'pics/life.png', 'pics/1Phishing.png', 'pics/2MaliciousLink.png', 'pics/3MaliciousAttachment.png', 'pics/4Malware.png', 'pics/5Ransomware.png', 'pics/6Vishing.png', 'pics/7InsiderRisk.png', 'pics/8CyberCriminal.png']).load(initialSetup);
+    PIXI.loader.add(['pics/title.png', 'pics/user.png', 'pics/ammo.png', 'pics/enemyAmmo.png', 'pics/menuBackground.png', 'pics/controls.png', 'pics/startButton.png', 'pics/nextButton.png', 'pics/life.png', 'pics/1Phishing.png', 'pics/2MaliciousLink.png', 'pics/3MaliciousAttachment.png', 'pics/4Malware.png', 'pics/5Ransomware.png', 'pics/6Vishing.png', 'pics/7InsiderRisk.png', 'pics/8Cybercriminal.png']).load(initialSetup);
     
     var state = menu;
     var user;
@@ -98,7 +98,7 @@
             }
         }
     
-        xhttp.open("GET", "/enemies", true);
+        xhttp.open("GET", "./enemies", true);
         xhttp.send(null);
     }
     function setup() {
