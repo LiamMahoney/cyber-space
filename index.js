@@ -68,5 +68,5 @@ app.get('/score/count', (req, res, next) => {
     });
 });
 
-app.listen(8080);
+app.listen(3002);
 
