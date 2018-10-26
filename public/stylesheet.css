@@ -106,9 +106,9 @@ canvas {
 }
 .score-item {
     color: white;
-    margin: 0em 2em;
     font-size: 2em;
     flex: 1;
+    text-align: center;
 }
 .score-row {
     display: flex;
