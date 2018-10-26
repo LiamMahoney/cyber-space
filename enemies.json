@@ -99,7 +99,7 @@
     },
     {
         "name": "Cybercriminal",
-        "picture": "8CyberCriminal.png", 
+        "picture": "8Cybercriminal.png", 
         "description": "This is an individual who uses technology to gain sensitive data or money. Cybercriminals typically have the motives of financial or informational gain, grudges, ideology or for fun.",
         "mitigation": "Cybercriminals can use a wide variety of cyber tactics and they are always changing. The best way to defend yourself is to stay up to date on the latest cyber trends.",
         "quiz": {
