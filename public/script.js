@@ -632,7 +632,7 @@
                 }
             };
     
-            xhttp.open("POST", "https://liammahoney.me/score", true);
+            xhttp.open("POST", "https://cyber-space.liammahoney.me/score", true);
             xhttp.send(JSON.stringify(scoreInfo));
         }
     }
@@ -660,7 +660,7 @@
             }
         };
         
-        xhttp.open("GET", "https://liammahoney.me/score", true);
+        xhttp.open("GET", "https://cyber-space.liammahoney.me/score", true);
         xhttp.send(null);
     }
     
