@@ -195,6 +195,8 @@
 
         //Main looping function for the round.
         function play(delta) {
+            //need to reset enemyVY every loop so they don't constantly move down
+            enemyVY = 0;
             //updates live score
             app.stage.children[1].text = "SCORE: " + (score + roundScore);
 
