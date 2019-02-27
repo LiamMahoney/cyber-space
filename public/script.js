@@ -62,6 +62,7 @@
         var enemyAmmoList = [];
         var enemyAmmoVX = 5;
         var enemyVX = 2;
+        var enemyVY = 0;
         var enemyFireRate = 300; //larger numbers are slower
         var enemyDirectionChange = 1;
         var roundNumber = 1;
@@ -197,7 +198,6 @@
             //updates live score
             app.stage.children[1].text = "SCORE: " + (score + roundScore);
 
-            var enemyVY = 0;
             updateUserAmmo(delta);
             // incrases fire rate
             if (enemyList.length < 5) {
@@ -205,7 +205,7 @@
             }
             //round still going on
             if (enemyList.length > 0) {
-                updateEnemyY();
+                updateEnemyMovement();
                 updateEnemy(enemyVY);
                 updateEnemyAmmo(delta);
             } else {
@@ -333,7 +333,7 @@
             quizMenuHelper();
             enemyFireRate = 300 - 20 * (roundNumber - 1);
         }
-        function updateEnemyY() {
+        function updateEnemyMovement() {
             // update enemyY
             if (enemyVX > 0) {
                 if (enemyList[enemyList.length - 1].x >= 980) {
