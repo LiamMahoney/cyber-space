@@ -1,3 +1,5 @@
+//FIXME: Create quiz menu for additional points
+//TODO: update score on screen as soon as round is over
 {
     var ua = window.navigator.userAgent;
     var msie = ua.indexOf("MSIE ");
@@ -60,7 +62,6 @@
         var enemyAmmoList = [];
         var enemyAmmoVX = 5;
         var enemyVX = 2;
-        var enemyVY = 0;
         var enemyFireRate = 300; //larger numbers are slower
         var enemyDirectionChange = 1;
         var roundNumber = 1;
@@ -204,7 +205,7 @@
             }
             //round still going on
             if (enemyList.length > 0) {
-                enemyVY = updateEnemyY();
+                updateEnemyY();
                 updateEnemy(enemyVY);
                 updateEnemyAmmo(delta);
             } else {
@@ -341,7 +342,7 @@
                     enemyVY = 20;
                 }
             } else if (enemyVX < 0) {
-                if (enemyList[0].x <= 10) {
+                if (enemyList[0].x <= 0) {
                     enemyVX = 2;
                     enemyVY = 20;
                 }
@@ -732,7 +733,7 @@
                         //ddSuccessNotification();
                         // TODO: add submission confirmation to scoreboard.
                     } else if (xhttp.readyState === 4 && xhttp.status !== 200) {
-                        //addErrorNotification();
+                        //addErrorNotification(); // TODO: add error notification to scoreboard.
                         //TODO: change error handling
                     }
                 };
@@ -976,7 +977,6 @@
             return key;
         }
 
-        /*Taken from PIXIjs tutorial: https://github.com/kittykatattack/learningPixi */
         function hitTest(ammo) {
             for (var i = 0; i < enemyList.length; i++) {
                 if (hitTestHelper(ammo, enemyList[i])) {
