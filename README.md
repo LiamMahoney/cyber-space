@@ -1,7 +1,7 @@
 <h1>Cyber Space</h1>
 <div>An information game used to educate employees during the National Cyber Security Awareness month.</div>
-
 <div>All graphical assets were created by Emily Ackerman.</div>
+<a href="cyber-space.liammahoney.me">Play here</a>
 
 <h4>Tech Stack</h4>
 <div>HTML/CSS</div>
